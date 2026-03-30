@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HOOLOO — Rise Together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0d0a07;
+      --cream: #f5ede0;
+      --warm: #e8d5b7;
+      --fire: #e8430a;
+      --gold: #f0b429;
+      --rust: #9c3a10;
+      --sage: #4a6741;
+      --blush: #d4846a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Fraunces', serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--fire);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--ink);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      mix-blend-mode: multiply;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--fire);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 3rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      top: -20%; left: -10%;
+      width: 80%; height: 80%;
+      background: radial-gradient(circle, rgba(232,67,10,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 14vw, 13rem);
+      line-height: 0.88;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-title span {
+      color: var(--fire);
+      display: block;
+    }
+    .hero-subtitle {
+      margin-top: 2rem;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.05rem;
+      color: var(--warm);
+      line-height: 1.7;
+      max-width: 380px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .hero-right {
+      background: var(--gold);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right::after {
+      content: 'WE RISE TOGETHER';
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 8vw;
+      color: rgba(0,0,0,0.06);
+      line-height: 1;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .hero-circle-stack {
+      position: relative;
+      width: 300px; height: 300px;
+    }
+    .circle-ring {
+      position: absolute;
+      border-radius: 50%;
+      animation: spin 18s linear infinite;
+    }
+    .circle-ring:nth-child(1) {
+      inset: 0;
+      border: 2px dashed var(--ink);
+      opacity: 0.3;
+    }
+    .circle-ring:nth-child(2) {
+      inset: 20px;
+      border: 1px solid var(--rust);
+      opacity: 0.5;
+      animation-direction: reverse;
+      animation-duration: 12s;
+    }
+    .circle-inner {
+      position: absolute;
+      inset: 50px;
+      background: var(--ink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .circle-inner p {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+    }
+    .hero-stat-row {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat strong {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .hero-stat span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      width: 100%; height: 100%;
+      background: var(--fire);
+      animation: scrollDown 1.5s ease infinite;
+    }
+
+    /* MARQUEE STRIP */
+    .marquee-strip {
+      background: var(--fire);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-flex;
+      animation: marqueeScroll 18s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+      padding: 0 2.5rem;
+    }
+    .marquee-dot {
+      color: var(--gold);
+      padding: 0 0.5rem;
+    }
+
+    /* MANIFESTO */
+    .manifesto {
+      padding: 8rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 5rem;
+      align-items: center;
+      background: var(--cream);
+      position: relative;
+    }
+    .manifesto::before {
+      content: '"';
+      position: absolute;
+      top: 2rem; left: 3rem;
+      font-family: 'Fraunces', serif;
+      font-size: 20rem;
+      line-height: 1;
+      color: rgba(0,0,0,0.04);
+      pointer-events: none;
+    }
+    .manifesto-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fire);
+      margin-bottom: 1.5rem;
+    }
+    .manifesto-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 12rem;
+      line-height: 0.85;
+      color: var(--warm);
+    }
+    .manifesto-quote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .manifesto-quote em {
+      font-style: normal;
+      font-weight: 700;
+      color: var(--fire);
+    }
+    .manifesto-body {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #4a3f35;
+    }
+
+    /* THE PROBLEM */
+    .problem {
+      background: var(--ink);
+      padding: 7rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(to left, rgba(232,67,10,0.12), transparent);
+      pointer-events: none;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.3rem 0.8rem;
+    }
+    .section-title-lg {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      line-height: 1;
+      color: var(--cream);
+      letter-spacing: 0.03em;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .problem-card {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      transition: background 0.4s ease;
+    }
+    .problem-card:last-child { border-right: none; }
+    .problem-card:hover { background: rgba(232,67,10,0.07); }
+    .problem-card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--fire);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+    .problem-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--cream);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .problem-card p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: rgba(245,237,224,0.65);
+    }
+    .problem-card-accent {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--fire);
+      transition: width 0.4s ease;
+    }
+    .problem-card:hover .problem-card-accent { width: 100%; }
+
+    /* MOVEMENT */
+    .movement {
+      padding: 8rem 4rem;
+      background: var(--cream);
+    }
+    .movement-intro {
+      max-width: 700px;
+      margin-bottom: 5rem;
+    }
+    .movement-intro h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+      margin-top: 0.8rem;
+    }
+    .movement-intro h2 span { color: var(--fire); }
+    .movement-pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px;
+      background: var(--ink);
+    }
+    .pillar {
+      background: var(--cream);
+      padding: 3.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s;
+    }
+    .pillar:hover { background: var(--gold); }
+    .pillar-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .pillar h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .pillar p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #4a3f35;
+    }
+    .pillar-bg-text {
+      position: absolute;
+      bottom: -1rem; right: -1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem;
+      color: rgba(0,0,0,0.04);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    /* STORIES */
+    .stories {
+      background: var(--rust);
+      padding: 7rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stories::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(0,0,0,0.04) 40px,
+        rgba(0,0,0,0.04) 41px
+      );
+    }
+    .stories .section-title-lg { color: var(--cream); }
+    .stories .section-tag { color: var(--gold); border-color: var(--gold); }
+    .stories-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .story-card {
+      background: rgba(245,237,224,0.08);
+      border: 1px solid rgba(245,237,224,0.15);
+      padding: 2.5rem;
+      backdrop-filter: blur(4px);
+      transition: transform 0.3s ease, background 0.3s;
+    }
+    .story-card:hover {
+      transform: translateY(-6px);
+      background: rgba(245,237,224,0.15);
+    }
+    .story-card.featured {
+      grid-row: span 1;
+      background: var(--cream);
+    }
+    .story-card.featured p { color: #4a3f35; }
+    .story-card.featured .story-name { color: var(--rust); }
+    .story-quote {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+    .story-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .story-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: rgba(245,237,224,0.5);
+      margin-top: 0.2rem;
+    }
+
+    /* JOIN */
+    .join {
+      padding: 8rem 4rem;
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .join-text h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+    }
+    .join-text h2 .fire { color: var(--fire); }
+    .join-text p {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #4a3f35;
+      max-width: 400px;
+    }
+    .join-form { display: flex; flex-direction: column; gap: 1rem; }
+    .join-form input,
+    .join-form select {
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid var(--ink);
+      padding: 0.9rem 0;
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+    .join-form input::placeholder { color: #9a8a7a; }
+    .join-form input:focus,
+    .join-form select:focus { border-color: var(--fire); }
+    .join-form select { cursor: pointer; }
+    .join-form option { background: var(--cream); }
+    .cta-btn {
+      margin-top: 1rem;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      padding: 1.1rem 2.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--fire);
+      transform: translateX(-101%);
+      transition: transform 0.35s ease;
+    }
+    .cta-btn:hover::before { transform: translateX(0); }
+    .cta-btn span { position: relative; z-index: 1; }
+
+    /* TAKE ACTION */
+    .action {
+      background: var(--gold);
+      padding: 6rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .action h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+      position: relative;
+      z-index: 1;
+    }
+    .action h2 span {
+      display: block;
+      color: var(--fire);
+    }
+    .action p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--rust);
+      margin: 1.5rem auto;
+      max-width: 550px;
+      position: relative;
+      z-index: 1;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 2.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      transition: background 0.3s, color 0.3s;
+      cursor: none;
+    }
+    .btn-primary:hover { background: var(--fire); border-color: var(--fire); }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      padding: 1rem 2.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      transition: background 0.3s, color 0.3s;
+      cursor: none;
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--cream); }
+    .action-bg-word {
+      position: absolute;
+      bottom: -2rem; right: -2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22vw;
+      color: rgba(0,0,0,0.05);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      padding: 4rem 4rem 2rem;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--cream);
+      letter-spacing: 0.12em;
+      line-height: 1;
+    }
+    .footer-logo span { color: var(--fire); display: block; font-size: 0.75rem; letter-spacing: 0.3em; font-family: 'Space Mono', monospace; margin-top: 0.3rem; }
+    .footer-links-group h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .footer-links-group ul { list-style: none; }
+    .footer-links-group ul li { margin-bottom: 0.6rem; }
+    .footer-links-group ul a {
+      font-family: 'Fraunces', serif;
+      font-size: 0.92rem;
+      color: rgba(245,237,224,0.6);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links-group ul a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: rgba(245,237,224,0.35);
+    }
+    .footer-socials {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-socials a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,237,224,0.4);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-socials a:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes scrollDown {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* REVEAL ON SCROLL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 8rem 2rem 4rem; }
+      .manifesto { grid-template-columns: 1fr; padding: 4rem 2rem; }
+      .problem { padding: 4rem 2rem; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .movement { padding: 5rem 2rem; }
+      .movement-pillars { grid-template-columns: 1fr; }
+      .stories { padding: 5rem 2rem; }
+      .stories-grid { grid-template-columns: 1fr; }
+      .join { grid-template-columns: 1fr; padding: 5rem 2rem; }
+      .action { padding: 5rem 2rem; }
+      .footer-top { flex-direction: column; gap: 2.5rem; }
+      footer { padding: 3rem 2rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">HOOLOO</a>
+    <ul class="nav-links">
+      <li><a href="#manifesto">Manifesto</a></li>
+      <li><a href="#movement">Movement</a></li>
+      <li><a href="#stories">Voices</a></li>
+      <li><a href="#join">Join Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Youth Movement · Est. Now · For All</p>
+      <h1 class="hero-title">HOO<span>LOO</span></h1>
+      <p class="hero-subtitle">
+        A generation refusing to sit in separate tables. We are the youth dismantling racial segregation — in schools, in spaces, in silence.
+      </p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-circle-stack">
+        <div class="circle-ring"></div>
+        <div class="circle-ring"></div>
+        <div class="circle-inner">
+          <p>NO<br/>WALLS<br/>HERE</p>
+        </div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <strong>12K+</strong>
+          <span>Youth Voices</span>
+        </div>
+        <div class="hero-stat">
+          <strong>47</strong>
+          <span>Cities Active</span>
+        </div>
+        <div class="hero-stat">
+          <strong>∞</strong>
+          <span>Futures Ahead</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      <span class="marquee-item">Unity Is Not Optional</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Every Seat Belongs To Everyone</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">No More Invisible Walls</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Rise Together Or Not At All</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Youth In Motion</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Schools For Every Body</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Unity Is Not Optional</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Every Seat Belongs To Everyone</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">No More Invisible Walls</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Rise Together Or Not At All</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Youth In Motion</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Schools For Every Body</span><span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" id="manifesto">
+    <div>
+      <p class="manifesto-label">Our Manifesto</p>
+      <div class="manifesto-number reveal">01</div>
+    </div>
+    <div class="reveal">
+      <p class="manifesto-quote">
+        Segregation didn't end when the laws changed.
+        It moved into <em>lunchrooms</em>, into <em>friend groups</em>,
+        into the quiet corners of every school in this country.
+      </p>
+      <p class="manifesto-body">
+        Hooloo was born from a personal truth: that young people are watching the world divide itself by color, background, and zip code — and deciding they won't be next. This is not an organization. It's a movement of individuals who choose, every single day, to sit with someone different. To speak first. To refuse the comfortable silence of separation.
+        <br/><br/>
+        We don't wait for policy. We act in the hallways, at the lunch table, on the bus. We are the change that doesn't ask permission.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM -->
+  <section class="problem" id="problem">
+    <div class="section-header reveal">
+      <span class="section-tag">The Reality</span>
+      <h2 class="section-title-lg">WHY NOW</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <p class="problem-card-num">001</p>
+        <h3>Segregated Schools</h3>
+        <p>Despite decades of legal change, racial and economic segregation in American schools has quietly intensified. The classroom is often the first place a child learns who they're "supposed" to sit with.</p>
+        <div class="problem-card-accent"></div>
+      </div>
+      <div class="problem-card reveal">
+        <p class="problem-card-num">002</p>
+        <h3>Social Siloing</h3>
+        <p>Social groups in schools and communities routinely form along racial lines. This isn't always hatred — sometimes it's just comfort, habit, and the absence of a reason to cross over.</p>
+        <div class="problem-card-accent"></div>
+      </div>
+      <div class="problem-card reveal">
+        <p class="problem-card-num">003</p>
+        <h3>The Cost of Silence</h3>
+        <p>When young people don't learn to exist across difference, they carry that division into adulthood. The lunch table predicts the boardroom. The school hallway shapes the neighborhood.</p>
+        <div class="problem-card-accent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVEMENT -->
+  <section class="movement" id="movement">
+    <div class="movement-intro reveal">
+      <p class="manifesto-label" style="color:var(--fire);">How We Move</p>
+      <h2>THE <span>HOOLOO</span><br/>WAY</h2>
+    </div>
+    <div class="movement-pillars">
+      <div class="pillar reveal">
+        <span class="pillar-icon">🪑</span>
+        <h3>Sit Different</h3>
+        <p>Every week, hooloo members make a conscious choice to sit next to someone outside their usual group. One seat. One conversation. That's where it starts.</p>
+        <div class="pillar-bg-text">SIT</div>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-icon">🗣️</span>
+        <h3>Speak First</h3>
+        <p>We train our members to initiate — not wait to be approached. Belonging starts with one person willing to say hello across the invisible line.</p>
+        <div class="pillar-bg-text">SAY</div>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-icon">📣</span>
+        <h3>Call It Out</h3>
+        <p>Hooloo members are empowered to name segregation when they see it — not with anger, but with clarity. Naming it is the first act of dismantling it.</p>
+        <div class="pillar-bg-text">NAME</div>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-icon">🤝</span>
+        <h3>Build Bridges</h3>
+        <p>We create structured moments — study groups, events, shared projects — designed specifically to mix people across racial and social divides.</p>
+        <div class="pillar-bg-text">BUILD</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <section class="stories" id="stories">
+    <div class="section-header reveal">
+      <span class="section-tag">Real Voices</span>
+      <h2 class="section-title-lg">THEIR WORDS</h2>
+    </div>
+    <div class="stories-grid">
+      <div class="story-card featured reveal">
+        <p class="story-quote">"I had never once sat with someone from a different background in four years of high school. On my first hooloo day, I sat down next to a girl I'd walked past hundreds of times. We talked for an hour. We had everything in common. I felt grief for all the years I had missed."</p>
+        <p class="story-name">Marcus T.</p>
+        <p class="story-role" style="color:#9c3a10;">Senior, Chicago, IL</p>
+      </div>
+      <div class="story-card reveal">
+        <p class="story-quote">"Nobody taught me to avoid anyone. It just happened, slowly, naturally — and that's exactly what made it so dangerous."</p>
+        <p class="story-name" style="color:var(--gold);">Priya S.</p>
+        <p class="story-role">9th Grade, Atlanta, GA</p>
+      </div>
+      <div class="story-card reveal">
+        <p class="story-quote">"Hooloo gave me language for something I had been feeling my whole life but couldn't name. I was lonely inside a crowd that looked like me."</p>
+        <p class="story-name" style="color:var(--gold);">Devon A.</p>
+        <p class="story-role">11th Grade, Brooklyn, NY</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section class="join" id="join">
+    <div class="join-text reveal">
+      <p class="manifesto-label" style="color:var(--fire);">Be Part Of It</p>
+      <h2>JOIN THE <span class="fire">MOVE</span><br/>MENT</h2>
+      <p>You don't need permission, a club card, or a petition. You need a decision. Sign up to receive resources, meet other hooloo members in your city, and commit to one act of unity per week.</p>
+    </div>
+    <div class="join-form reveal">
+      <input type="text" placeholder="Your First Name"/>
+      <input type="email" placeholder="Your Email Address"/>
+      <select>
+        <option value="" disabled selected>I am a...</option>
+        <option>Student</option>
+        <option>Educator</option>
+        <option>Parent</option>
+        <option>Community Member</option>
+        <option>Organizer</option>
+      </select>
+      <input type="text" placeholder="Your City"/>
+      <button class="cta-btn" onclick="alert('Welcome to Hooloo. You just made a choice that matters.')">
+        <span>I'M IN — COUNT ME ✦</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ACTION -->
+  <section class="action">
+    <h2>
+      THE TABLE
+      <span>HAS ROOM.</span>
+    </h2>
+    <p>Segregation thrives in silence and comfort. Hooloo thrives in the small, daily, personal acts of choosing otherwise. Start today.</p>
+    <div class="action-buttons">
+      <a href="#join" class="btn-primary">Join the Movement</a>
+      <a href="#manifesto" class="btn-outline">Read the Manifesto</a>
+    </div>
+    <div class="action-bg-word">RISE</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">
+        HOOLOO
+        <span>Rise Together · Youth Movement</span>
+      </div>
+      <div class="footer-links-group">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#movement">The Way</a></li>
+          <li><a href="#stories">Voices</a></li>
+          <li><a href="#join">Join Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Starter Guide</a></li>
+          <li><a href="#">School Toolkit</a></li>
+          <li><a href="#">Discussion Cards</a></li>
+          <li><a href="#">Reading List</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Find Members Near You</a></li>
+          <li><a href="#">Share Your Story</a></li>
+          <li><a href="#">Host a Hooloo Day</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Hooloo Movement. A personal act is still political.</p>
+      <div class="footer-socials">
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">Twitter / X</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animCursor() {
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
